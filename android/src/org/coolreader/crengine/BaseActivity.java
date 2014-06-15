@@ -120,7 +120,7 @@ public class BaseActivity extends Activity implements Settings {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
 	super.onWindowFocusChanged(hasFocus);
-	if (hasFocus && (DeviceInfo.getSDKLevel() >= 19)) {
+	/*if (hasFocus && (DeviceInfo.getSDKLevel() >= 19)) {
 		int flag = 0;
 		if (mFullscreen)
 			flag |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -131,7 +131,7 @@ public class BaseActivity extends Activity implements Settings {
 					| View.SYSTEM_UI_FLAG_FULLSCREEN;
 
             mDecorView.setSystemUiVisibility(flag);
-        }
+        }*/
     }
 
     /** Called when the activity is first created. */
