@@ -1872,7 +1872,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 		
 		public static final int MAX_PROGRESS = 10000;
 		public final static int ANIMATION_INTERVAL_NORMAL = 30;
-		public final static int ANIMATION_INTERVAL_EINK = 5000;
+		public final static int ANIMATION_INTERVAL_EINK = 300;
 		
 		public AutoScrollAnimation(final int startProgress) {
 			progress = startProgress;
