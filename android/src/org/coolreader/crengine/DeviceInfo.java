@@ -17,6 +17,7 @@ public class DeviceInfo {
 	public final static boolean EINK_SCREEN;
 	public final static boolean EINK_SCREEN_UPDATE_MODES_SUPPORTED;
 	public final static boolean NOOK_NAVIGATION_KEYS;
+    public final static boolean EINK_KOBO;
 	public final static boolean EINK_NOOK;
 	public final static boolean EINK_NOOK_120;
 	public final static boolean EINK_ONYX;
@@ -97,11 +98,17 @@ public class DeviceInfo {
 		MODEL = getBuildField("MODEL");
 		DEVICE = getBuildField("DEVICE");
 		PRODUCT = getBuildField("PRODUCT");
+
 		SAMSUNG_BUTTONS_HIGHLIGHT_PATCH = MANUFACTURER.toLowerCase().contentEquals("samsung") &&
 		        (MODEL.contentEquals("GT-S5830") || MODEL.contentEquals("GT-S5660")); // More models?
-		AMOLED_SCREEN = MANUFACTURER.toLowerCase().contentEquals("samsung") &&
+
+        AMOLED_SCREEN = MANUFACTURER.toLowerCase().contentEquals("samsung") &&
         		(MODEL.toLowerCase().startsWith("gt-i")); // AMOLED screens: GT-IXXXX
-		EINK_NOOK = MANUFACTURER.toLowerCase().contentEquals("barnesandnoble") &&
+
+        EINK_KOBO = MANUFACTURER.toLowerCase().contentEquals("samsung") &&
+                PRODUCT.contentEquals("imx50_rdp") && MODEL.contentEquals("Nexus S") &&
+                DEVICE.toLowerCase().contentEquals("imx50_rdp");
+        EINK_NOOK = MANUFACTURER.toLowerCase().contentEquals("barnesandnoble") &&
 				(PRODUCT.contentEquals("NOOK") || MODEL.contentEquals("NOOK") || MODEL.contentEquals("BNRV350") || MODEL.contentEquals("BNRV300") || MODEL.contentEquals("BNRV500")) &&
 				DEVICE.toLowerCase().contentEquals("zoom2");
 		EINK_NOOK_120 = EINK_NOOK && (MODEL.contentEquals("BNRV350") || MODEL.contentEquals("BNRV300") || MODEL.contentEquals("BNRV500"));
@@ -110,7 +117,7 @@ public class DeviceInfo {
 		EINK_ONYX = MANUFACTURER.toLowerCase().contentEquals("onyx") && MODEL.startsWith("C") && MODEL.endsWith("ML");
 		//MANUFACTURER -DNS, DEVICE -BK6004C, MODEL - DNS Airbook EGH602, PRODUCT - BK6004C
 		EINK_DNS = MANUFACTURER.toLowerCase().contentEquals("dns") && MODEL.startsWith("DNS Airbook EGH");
-		EINK_SCREEN = EINK_SONY || EINK_NOOK || EINK_ONYX || EINK_DNS; // TODO: set to true for eink devices like Nook Touch
+		EINK_SCREEN = EINK_KOBO || EINK_SONY || EINK_NOOK || EINK_ONYX || EINK_DNS; // TODO: set to true for eink devices like Nook Touch
 
 		POCKETBOOK = MODEL.toLowerCase().startsWith("pocketbook") || MODEL.toLowerCase().startsWith("obreey");
 		
