@@ -84,7 +84,7 @@ public class OptionsDialog extends BaseDialog implements TabContentFactory, Opti
 			0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.5, 1.9
 		};
 	int[] mScreenFullUpdateInterval = new int[] {
-			0, 2, 3, 4, 5, 7, 10, 15, 20
+			0, 1, 2, 3, 4, 5, 6, 7, 10, 15
 		};
 	int[] mScreenUpdateModes = new int[] {
 			0, 1, 2//, 2, 3
@@ -1819,6 +1819,12 @@ public class OptionsDialog extends BaseDialog implements TabContentFactory, Opti
 		//
 		mOptionsPage = new OptionsListView(getContext());
 		mOptionsPage.add(new BoolOption(this, getString(R.string.options_app_fullscreen), PROP_APP_FULLSCREEN).setIconId(R.drawable.cr3_option_fullscreen));
+        if ( DeviceInfo.EINK_SCREEN_UPDATE_MODES_SUPPORTED ) {
+            if (!DeviceInfo.EINK_KOBO) {
+                mOptionsPage.add(new ListOption(this, getString(R.string.options_screen_update_mode), PROP_APP_SCREEN_UPDATE_MODE).add(mScreenUpdateModes, mScreenUpdateModesTitles).setDefaultValue("0"));
+            }
+            mOptionsPage.add(new ListOption(this, getString(R.string.options_screen_update_interval), PROP_APP_SCREEN_UPDATE_INTERVAL).add(mScreenFullUpdateInterval).setDefaultValue("10"));
+        }
 		mOptionsPage.add(new ListOption(this, getString(R.string.options_view_toolbar_position), PROP_TOOLBAR_LOCATION).add(mToolbarPositions, mToolbarPositionsTitles).setDefaultValue("1"));
 		mOptionsPage.add(new BoolOption(this, getString(R.string.options_view_toolbar_hide_in_fullscreen), PROP_TOOLBAR_HIDE_IN_FULLSCREEN).setDefaultValue("0"));
 		mOptionsPage.add(new ListOption(this, getString(R.string.options_view_mode), PROP_PAGE_VIEW_MODE).add(mViewModes, mViewModeTitles).setDefaultValue("1").setIconId(R.drawable.cr3_option_view_mode_scroll));
@@ -1833,10 +1839,6 @@ public class OptionsDialog extends BaseDialog implements TabContentFactory, Opti
 		mOptionsPage.add(new ColorOption(this, getString(R.string.options_color_background), PROP_BACKGROUND_COLOR, 0xFFFFFF).setIconId(R.drawable.cr3_option_background_color));
 		if ( !DeviceInfo.EINK_SCREEN )
 			mOptionsPage.add(new TextureOptions(this, getString(R.string.options_background_texture)).setIconId(R.drawable.cr3_option_background_image));
-		if ( DeviceInfo.EINK_SCREEN_UPDATE_MODES_SUPPORTED ) {
-			mOptionsPage.add(new ListOption(this, getString(R.string.options_screen_update_mode), PROP_APP_SCREEN_UPDATE_MODE).add(mScreenUpdateModes, mScreenUpdateModesTitles).setDefaultValue("0"));
-			mOptionsPage.add(new ListOption(this, getString(R.string.options_screen_update_interval), PROP_APP_SCREEN_UPDATE_INTERVAL).add(mScreenFullUpdateInterval).setDefaultValue("10"));
-		}
 
 		mOptionsPage.add(new StatusBarOption(this, getString(R.string.options_page_titlebar)));
 		mOptionsPage.add(new BoolOption(this, getString(R.string.options_page_footnotes), PROP_FOOTNOTES).setDefaultValue("1"));

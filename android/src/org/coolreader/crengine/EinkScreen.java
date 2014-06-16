@@ -1,7 +1,10 @@
 package org.coolreader.crengine;
 
+import com.kobo_service.NativeHelper;
 import org.coolreader.crengine.N2EpdController;
 import android.view.View;
+
+import java.util.logging.Handler;
 
 public class EinkScreen {
 	
@@ -23,7 +26,15 @@ public class EinkScreen {
 	}
 	
 	public static void PrepareController(View view, boolean isPartially) {
-		if (DeviceInfo.EINK_NOOK) {
+        if (DeviceInfo.EINK_KOBO) {
+            if (RefreshNumber == -1) {
+                KoboOneTimeRefresh();
+            }
+            RefreshNumber++;
+            if (UpdateModeInterval > 0 && RefreshNumber + 1 >= UpdateModeInterval) {
+                RefreshNumber = -1;
+            }
+        } else if (DeviceInfo.EINK_NOOK) {
 			//System.err.println("Sleep = " + isPartially);
 			if (isPartially || IsSleep != isPartially) {
 				SleepController(isPartially, view);
@@ -88,7 +99,19 @@ public class EinkScreen {
 		}
 	}
 
-	public static void ResetController(int mode, View view) {
+    private static void KoboOneTimeRefresh() {
+        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 1);
+
+        final android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 0);
+            }
+        }, 100);
+    }
+
+    public static void ResetController(int mode, View view) {
 		if (!DeviceInfo.EINK_NOOK) { return; }
 		System.err.println("+++ResetController " + mode);
 		switch (mode) {
@@ -141,8 +164,8 @@ public class EinkScreen {
 		switch (mode) {
 		case cmodeClear:	
 			N2EpdController.setMode(N2EpdController.REGION_APP_3,
-				N2EpdController.WAVE_GC,
-				N2EpdController.MODE_ONESHOT_ALL);
+                    N2EpdController.WAVE_GC,
+                    N2EpdController.MODE_ONESHOT_ALL);
 //				N2EpdController.MODE_CLEAR, view);
 			break;
 		case cmodeOneshot:	
