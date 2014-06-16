@@ -1829,7 +1829,7 @@ public class OptionsDialog extends BaseDialog implements TabContentFactory, Opti
 		mOptionsPage.add(new BoolOption(this, getString(R.string.options_view_toolbar_hide_in_fullscreen), PROP_TOOLBAR_HIDE_IN_FULLSCREEN).setDefaultValue("0"));
 		mOptionsPage.add(new ListOption(this, getString(R.string.options_view_mode), PROP_PAGE_VIEW_MODE).add(mViewModes, mViewModeTitles).setDefaultValue("1").setIconId(R.drawable.cr3_option_view_mode_scroll));
 		//mOptionsPage.add(new ListOption(getString(R.string.options_page_orientation), PROP_ROTATE_ANGLE).add(mOrientations, mOrientationsTitles).setDefaultValue("0"));
-		if (DeviceInfo.getSDKLevel() >= 9)
+		if (DeviceInfo.getSDKLevel() >= 9 && !DeviceInfo.EINK_KOBO)
 			mOptionsPage.add(new ListOption(this, getString(R.string.options_page_orientation), PROP_APP_SCREEN_ORIENTATION).add(mOrientations_API9, mOrientationsTitles_API9).setDefaultValue("0").setIconId(R.drawable.cr3_option_page_orientation_landscape));
 		else
 			mOptionsPage.add(new ListOption(this, getString(R.string.options_page_orientation), PROP_APP_SCREEN_ORIENTATION).add(mOrientations, mOrientationsTitles).setDefaultValue("0").setIconId(R.drawable.cr3_option_page_orientation_landscape));

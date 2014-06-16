@@ -99,6 +99,7 @@ public class ReaderViewLayout extends ViewGroup implements Settings {
 				ReaderAction.TOC,
 				ReaderAction.SEARCH,
 				ReaderAction.OPTIONS,
+                ReaderAction.TOGGLE_ORIENTATION,
 				ReaderAction.BOOKMARKS,
 				ReaderAction.FILE_BROWSER_ROOT,
 				ReaderAction.TOGGLE_DAY_NIGHT,
