@@ -1,5 +1,9 @@
 package com.kobo_service;
 
+import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class NativeHelper {
 
     static {
@@ -21,5 +25,18 @@ public class NativeHelper {
     public static native int sendEvent(String device, short type, short code, int value);
 
     public static native int ioctlSetInteger(String device, int code, int value);
-    public static native int ioctlGetInteger(String device, int  code);
+    public static native int ioctlGetInteger(String device, int code);
+
+    public static void OneTimeRefresh() {
+        final int oldMode = NativeHelper.ioctlGetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_GET_UPDATE_MODE);
+        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 1);
+
+        android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, oldMode);
+            }
+        }, 100);
+    }
 }

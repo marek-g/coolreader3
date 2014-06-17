@@ -1,5 +1,6 @@
 package org.coolreader.crengine;
 
+import android.util.Log;
 import com.kobo_service.NativeHelper;
 import org.coolreader.crengine.N2EpdController;
 import android.view.View;
@@ -28,7 +29,7 @@ public class EinkScreen {
 	public static void PrepareController(View view, boolean isPartially) {
         if (DeviceInfo.EINK_KOBO) {
             if (RefreshNumber == -1) {
-                KoboOneTimeRefresh();
+                NativeHelper.OneTimeRefresh();
             }
             RefreshNumber++;
             if (UpdateModeInterval > 0 && RefreshNumber + 1 >= UpdateModeInterval) {
@@ -98,18 +99,6 @@ public class EinkScreen {
 			*/
 		}
 	}
-
-    private static void KoboOneTimeRefresh() {
-        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 1);
-
-        final android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 0);
-            }
-        }, 100);
-    }
 
     public static void ResetController(int mode, View view) {
 		if (!DeviceInfo.EINK_NOOK) { return; }
