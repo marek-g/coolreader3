@@ -79,7 +79,10 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 		}
 		@Override 
 		public void onResume() {
-			
+            // MG: added requestLayout() because without it
+            // application (for example changing pages) was slow after resumed from sleep
+            // (not sure why)
+            requestLayout();
 		}
 		@Override 
 	    protected void onDraw(Canvas canvas) {
