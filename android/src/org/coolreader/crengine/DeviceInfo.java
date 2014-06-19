@@ -124,7 +124,7 @@ public class DeviceInfo {
 		NOOK_NAVIGATION_KEYS = EINK_NOOK; // TODO: add autodetect
 		SONY_NAVIGATION_KEYS = EINK_SONY;
 		EINK_SCREEN_UPDATE_MODES_SUPPORTED = EINK_SCREEN && (EINK_NOOK || EINK_KOBO); // TODO: add autodetect
-		FORCE_LIGHT_THEME = EINK_SCREEN || MODEL.equalsIgnoreCase("pocketbook vision");
+		FORCE_LIGHT_THEME = false; //EINK_SCREEN || MODEL.equalsIgnoreCase("pocketbook vision");
 		USE_CUSTOM_TOAST = EINK_SCREEN;
 		NOFLIBUSTA = POCKETBOOK;
 		NAVIGATE_LEFTRIGHT = POCKETBOOK && DEVICE.startsWith("EP10");
