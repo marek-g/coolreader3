@@ -2290,13 +2290,17 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
             break;
 		case DCMD_ZOOM_OUT:
             doEngineCommand(ReaderCommand.DCMD_ZOOM_OUT, param);
-            syncViewSettings(getSettings(), true, true);
-            mActivity.showToast(mActivity.getString(R.string.action_new_font_size) + " " + getSettings().getProperty(PROP_FONT_SIZE));
+            syncViewSettings(getSettings(), true, false);
+
+            mActivity.showToast(mActivity.getString(R.string.action_new_font_size) + " " +
+                   doc.getSettings().getProperty(PROP_FONT_SIZE), 2000, 24, true);
             break;
 		case DCMD_ZOOM_IN:
             doEngineCommand(ReaderCommand.DCMD_ZOOM_IN, param);
-            syncViewSettings(getSettings(), true, true);
-            mActivity.showToast(mActivity.getString(R.string.action_new_font_size) + " " + getSettings().getProperty(PROP_FONT_SIZE));
+            syncViewSettings(getSettings(), true, false);
+
+            mActivity.showToast(mActivity.getString(R.string.action_new_font_size) + " " +
+                    doc.getSettings().getProperty(PROP_FONT_SIZE), 2000, 24, true);
             break;
 		case DCMD_FONT_NEXT:
 			switchFontFace(1);

@@ -514,7 +514,9 @@ public class CRToolBar extends ViewGroup {
 		tb.setOnActionHandler(new OnActionHandler() {
 			@Override
 			public boolean onActionSelected(ReaderAction item) {
-				popup.dismiss();
+                if (!item.canRepeat()) {
+                    popup.dismiss();
+                }
 				return onActionHandler.onActionSelected(item);
 			}
 		});

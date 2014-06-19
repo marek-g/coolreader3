@@ -959,16 +959,19 @@ public class BaseActivity extends Activity implements Settings {
 	}
 
 	public void showToast(String msg, int duration) {
-		log.v("showing toast: " + msg);
-		if (DeviceInfo.USE_CUSTOM_TOAST) {
-			ToastView.showToast(getContentView(), msg, Toast.LENGTH_LONG, settings().getInt(ReaderView.PROP_FONT_SIZE, 20));
-		} else {
-			// classic Toast
-			Toast toast = Toast.makeText(this, msg, duration);
-			toast.show();
-		}
+		showToast(msg, duration, settings().getInt(ReaderView.PROP_FONT_SIZE, 20), false);
 	}
 
+    public void showToast(String msg, int duration, int fontSize, boolean dismissPrevious) {
+        log.v("showing toast: " + msg);
+        if (DeviceInfo.USE_CUSTOM_TOAST || dismissPrevious) {
+            ToastView.showToast(getContentView(), msg, Toast.LENGTH_LONG, fontSize, dismissPrevious);
+        } else {
+            // classic Toast
+            Toast toast = Toast.makeText(this, msg, duration);
+            toast.show();
+        }
+    }
 
 	protected View contentView;
 	public View getContentView() {

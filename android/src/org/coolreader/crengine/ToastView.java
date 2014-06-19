@@ -50,10 +50,18 @@ public class ToastView {
     };
 
     static int fontSize = 24;
-    public static void showToast(View anchor, String msg, int duration, int textSize) {
+    public static void showToast(View anchor, String msg, int duration, int textSize, boolean dismissPrevious) {
     	mReaderView = anchor;
     	fontSize = textSize;
         try {
+            if (dismissPrevious) {
+                if (window != null) {
+                    mHandler.removeCallbacks(handleDismiss);
+                    window.dismiss();
+                    queue.clear();
+                    showing.compareAndSet(true, false);
+                }
+            }
             queue.put(new Toast(anchor, msg, duration));
         } catch (InterruptedException e) {
             e.printStackTrace();
