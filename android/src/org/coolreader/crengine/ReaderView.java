@@ -1630,10 +1630,10 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 	public void toggleDocumentStyles() {
 		if ( mOpened && mBookInfo!=null ) {
 			log.d("toggleDocumentStyles()");
-			boolean disableInternalStyles = mBookInfo.getFileInfo().getFlag(FileInfo.DONT_USE_DOCUMENT_STYLES_FLAG);
-			disableInternalStyles = !disableInternalStyles;
-			mBookInfo.getFileInfo().setFlag(FileInfo.DONT_USE_DOCUMENT_STYLES_FLAG, disableInternalStyles);
-            doEngineCommand(ReaderCommand.DCMD_SET_INTERNAL_STYLES, disableInternalStyles ? 0 : 1);
+			boolean enableInternalStyles = mBookInfo.getFileInfo().getFlag(FileInfo.USE_DOCUMENT_STYLES_FLAG);
+			enableInternalStyles = !enableInternalStyles;
+			mBookInfo.getFileInfo().setFlag(FileInfo.USE_DOCUMENT_STYLES_FLAG, enableInternalStyles);
+            doEngineCommand(ReaderCommand.DCMD_SET_INTERNAL_STYLES, enableInternalStyles ? 1 : 0);
             doEngineCommand(ReaderCommand.DCMD_REQUEST_RENDER, 1);
             mActivity.getDB().saveBookInfo(mBookInfo);
 		}
@@ -1690,7 +1690,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 	
 	public boolean getDocumentStylesEnabled() {
 		if ( mOpened && mBookInfo!=null ) {
-			boolean flg = !mBookInfo.getFileInfo().getFlag(FileInfo.DONT_USE_DOCUMENT_STYLES_FLAG);
+			boolean flg = mBookInfo.getFileInfo().getFlag(FileInfo.USE_DOCUMENT_STYLES_FLAG);
 			return flg;
 		}
 		return false;
@@ -4727,7 +4727,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 		Runnable errorHandler;
 		String pos;
 		int profileNumber;
-		boolean disableInternalStyles;
+		boolean useInternalStyles;
 		boolean disableTextAutoformat;
 		Properties props;
 		LoadDocumentTask(BookInfo bookInfo, Runnable errorHandler)
@@ -4751,7 +4751,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 			this.path = fileInfo.arcname != null ? fileInfo.arcname : fileInfo.pathname;
 			this.errorHandler = errorHandler;
 			//FileInfo fileInfo = new FileInfo(filename);
-			disableInternalStyles = mBookInfo.getFileInfo().getFlag(FileInfo.DONT_USE_DOCUMENT_STYLES_FLAG);
+			useInternalStyles = mBookInfo.getFileInfo().getFlag(FileInfo.USE_DOCUMENT_STYLES_FLAG);
 			disableTextAutoformat = mBookInfo.getFileInfo().getFlag(FileInfo.DONT_REFLOW_TXT_FILES_FLAG);
 			profileNumber = mBookInfo.getFileInfo().getProfileId();
 			Properties oldSettings = new Properties(mSettings);
@@ -4794,7 +4794,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 			BackgroundThread.ensureBackground();
 			coverPageBytes = null;
 			log.i("Loading document " + filename);
-			doc.doCommand(ReaderCommand.DCMD_SET_INTERNAL_STYLES.nativeId, disableInternalStyles ? 0 : 1);
+			doc.doCommand(ReaderCommand.DCMD_SET_INTERNAL_STYLES.nativeId, useInternalStyles ? 1 : 0);
 			doc.doCommand(ReaderCommand.DCMD_SET_TEXT_FORMAT.nativeId, disableTextAutoformat ? 0 : 1);
 	        boolean success = doc.loadDocument(filename);
 	        if ( success ) {
@@ -5343,7 +5343,7 @@ public class ReaderView implements android.view.SurfaceHolder.Callback, Settings
 //			    	return null;
 //				}
 //			});
-////			int internalStyles = mBookInfo.getFileInfo().getFlag(FileInfo.DONT_USE_DOCUMENT_STYLES_FLAG) ? 0 : 1;
+////			int internalStyles = mBookInfo.getFileInfo().getFlag(FileInfo.USE_DOCUMENT_STYLES_FLAG) ? 0 : 1;
 ////			int txtReflow = mBookInfo.getFileInfo().getFlag(FileInfo.DONT_REFLOW_TXT_FILES_FLAG) ? 0 : 2;
 ////			log.d("internalStyles: " + internalStyles);
 ////			doc.doCommand(ReaderCommand.DCMD_SET_INTERNAL_STYLES.nativeId, internalStyles | txtReflow);

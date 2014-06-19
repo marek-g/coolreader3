@@ -50,7 +50,7 @@ public class FileInfo {
 	public int arcsize; // compressed size
 	public long createTime;
 	public long lastAccessTime;
-	public int flags = DONT_USE_DOCUMENT_STYLES_FLAG;
+	public int flags;
 	public boolean isArchive;
 	public boolean isDirectory;
 	public boolean isListed;
@@ -62,7 +62,7 @@ public class FileInfo {
 	private ArrayList<FileInfo> dirs; // directories
 
 	// 16 lower bits reserved for document flags
-	public static final int DONT_USE_DOCUMENT_STYLES_FLAG = 1;
+	public static final int USE_DOCUMENT_STYLES_FLAG = 1;
 	public static final int DONT_REFLOW_TXT_FILES_FLAG = 2;
 	public static final int USE_DOCUMENT_FONTS_FLAG = 4;
 	
