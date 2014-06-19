@@ -31,7 +31,13 @@ public class NativeHelper {
 
     public static void OneTimeRefresh() {
         try {
-            final int oldMode = NativeHelper.ioctlGetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_GET_UPDATE_MODE);
+            int oldMode = NativeHelper.ioctlGetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_GET_UPDATE_MODE);
+            if (oldMode == 1) {
+                // prevent from accidentally stuck in full update mode forever
+                oldMode = 0;
+            }
+            final int oldModeFinal = oldMode;
+
             NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 1);
 
             final android.os.Handler handler = new android.os.Handler();
@@ -39,7 +45,7 @@ public class NativeHelper {
                 @Override
                 public void run() {
                     try {
-                        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, oldMode);
+                        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, oldModeFinal);
                     } catch (Exception ex) {
                         Log.w("Cannot refresh e-Ink screen.", ex);
                     }
