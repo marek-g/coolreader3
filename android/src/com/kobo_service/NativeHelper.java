@@ -1,13 +1,15 @@
 package com.kobo_service;
 
 import android.util.Log;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class NativeHelper {
 
     static {
-        System.loadLibrary("kobo_service");
+        try {
+            System.loadLibrary("kobo_service");
+        } catch (Exception ex) {
+            Log.w("Cannot open kobo_service library.", ex);
+        }
     }
 
     //
@@ -28,15 +30,23 @@ public class NativeHelper {
     public static native int ioctlGetInteger(String device, int code);
 
     public static void OneTimeRefresh() {
-        final int oldMode = NativeHelper.ioctlGetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_GET_UPDATE_MODE);
-        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 1);
+        try {
+            final int oldMode = NativeHelper.ioctlGetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_GET_UPDATE_MODE);
+            NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, 1);
 
-        android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, oldMode);
-            }
-        }, 100);
+            final android.os.Handler handler = new android.os.Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        NativeHelper.ioctlSetInteger("/dev/graphics/fb0", NativeHelper.MXCFB_SET_UPDATE_MODE, oldMode);
+                    } catch (Exception ex) {
+                        Log.w("Cannot refresh e-Ink screen.", ex);
+                    }
+                }
+            }, 100);
+        } catch (Exception ex) {
+            Log.w("Cannot refresh e-Ink screen.", ex);
+        }
     }
 }
