@@ -1722,9 +1722,9 @@ public class OptionsDialog extends BaseDialog implements TabContentFactory, Opti
 		mOptionsCSS = new OptionsListView(getContext());
 		//mProperties.setBool(PROP_TXT_OPTION_PREFORMATTED, mReaderView.isTextAutoformatEnabled());
 		//mProperties.setBool(PROP_EMBEDDED_STYLES, mReaderView.getDocumentStylesEnabled());
-		mOptionsCSS.add(new BoolOption(this, getString(R.string.mi_book_styles_enable), PROP_EMBEDDED_STYLES).setDefaultValue("1").noIcon());
+		mOptionsCSS.add(new BoolOption(this, getString(R.string.mi_book_styles_enable), PROP_EMBEDDED_STYLES).setDefaultValue("0").noIcon());
 		if (isEpubFormat) {
-			mOptionsCSS.add(new BoolOption(this, getString(R.string.options_font_embedded_document_font_enabled), PROP_EMBEDDED_FONTS).setDefaultValue("1").noIcon());
+			mOptionsCSS.add(new BoolOption(this, getString(R.string.options_font_embedded_document_font_enabled), PROP_EMBEDDED_FONTS).setDefaultValue("0").noIcon());
 		}
 		if (isTextFormat) {
 			mOptionsCSS.add(new BoolOption(this, getString(R.string.mi_text_autoformat_enable), PROP_TXT_OPTION_PREFORMATTED).setDefaultValue("1").noIcon());
@@ -1995,10 +1995,10 @@ public class OptionsDialog extends BaseDialog implements TabContentFactory, Opti
 			if (mProperties.getBool(PROP_TXT_OPTION_PREFORMATTED, true) != mReaderView.isTextAutoformatEnabled()) {
 				mReaderView.toggleTextFormat();
 			}
-			if (mProperties.getBool(PROP_EMBEDDED_STYLES, true) != mReaderView.getDocumentStylesEnabled()) {
+			if (mProperties.getBool(PROP_EMBEDDED_STYLES, false) != mReaderView.getDocumentStylesEnabled()) {
 				mReaderView.toggleDocumentStyles();
 			}
-			if (mProperties.getBool(PROP_EMBEDDED_FONTS, true) != mReaderView.getDocumentFontsEnabled()) {
+			if (mProperties.getBool(PROP_EMBEDDED_FONTS, false) != mReaderView.getDocumentFontsEnabled()) {
 				mReaderView.toggleEmbeddedFonts();
 			}
 		}

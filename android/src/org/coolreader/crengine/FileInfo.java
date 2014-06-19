@@ -50,7 +50,7 @@ public class FileInfo {
 	public int arcsize; // compressed size
 	public long createTime;
 	public long lastAccessTime;
-	public int flags;
+	public int flags = DONT_USE_DOCUMENT_STYLES_FLAG;
 	public boolean isArchive;
 	public boolean isDirectory;
 	public boolean isListed;
