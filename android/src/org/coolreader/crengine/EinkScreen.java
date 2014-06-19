@@ -17,10 +17,21 @@ public class EinkScreen {
 	public static int UpdateModeInterval;
 	public static int RefreshNumber = -1;
 	public static boolean IsSleep = false;
+
+    private static int PopupsNumber = 0;
+
 	// constants
 	public final static int cmodeClear = 0;
 	public final static int cmodeOneshot = 1;
 	public final static int cmodeActive = 2;
+
+    public static void IncreasePopupsNumber() {
+        PopupsNumber++;
+    }
+
+    public static void DecreasePopupsNumber() {
+        PopupsNumber--;
+    }
 
 	public static void Refresh() {
 		RefreshNumber = -1;
@@ -28,7 +39,7 @@ public class EinkScreen {
 	
 	public static void PrepareController(View view, boolean isPartially) {
         if (DeviceInfo.EINK_KOBO) {
-            if (RefreshNumber == -1) {
+            if (RefreshNumber == -1 && PopupsNumber <= 0) {
                 NativeHelper.OneTimeRefresh();
             }
             RefreshNumber++;

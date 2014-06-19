@@ -26,7 +26,7 @@ public class CRToolBar extends ViewGroup {
 
 
 	private static final Logger log = L.create("tb");
-	
+
 	final private BaseActivity activity;
 	private ArrayList<ReaderAction> actions = new ArrayList<ReaderAction>();
 	private ArrayList<ReaderAction> iconActions = new ArrayList<ReaderAction>();
@@ -194,8 +194,9 @@ public class CRToolBar extends ViewGroup {
 					showPopup(activity, activity.getContentView(), actions, onActionHandler, onOverflowHandler, actions.size(), Settings.VIEWER_TOOLBAR_TOP);
 				} else {
 					if (allActionsHaveIcon(itemsOverflow)) {
-						if (popup != null)
-							popup.dismiss();
+						if (popup != null) {
+                            popup.dismiss();
+                        }
 						showPopup(activity, activity.getContentView(), itemsOverflow, onActionHandler, onOverflowHandler, actions.size(), isMultiline ? popupLocation : Settings.VIEWER_TOOLBAR_BOTTOM);
 					} else
 						activity.showActionsPopupMenu(itemsOverflow, onActionHandler);
@@ -563,11 +564,23 @@ public class CRToolBar extends ViewGroup {
 		int [] location = new int[2];
 		anchor.getLocationOnScreen(location);
 		int popupY = location[1];
-		if (popupLocation == Settings.VIEWER_TOOLBAR_BOTTOM)
-			popup.showAtLocation(anchor, Gravity.BOTTOM | Gravity.FILL_HORIZONTAL, 0, 0); //location[0], popupY - anchor.getHeight());
-		else
-			popup.showAtLocation(anchor, Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0); //, location[0], popupY);
-		return popup;
+
+        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                EinkScreen.DecreasePopupsNumber();
+            }
+        });
+
+        if (popupLocation == Settings.VIEWER_TOOLBAR_BOTTOM) {
+            popup.showAtLocation(anchor, Gravity.BOTTOM | Gravity.FILL_HORIZONTAL, 0, 0); //location[0], popupY - anchor.getHeight());
+            EinkScreen.IncreasePopupsNumber();
+        } else {
+            popup.showAtLocation(anchor, Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0); //, location[0], popupY);
+            EinkScreen.IncreasePopupsNumber();
+        }
+
+        return popup;
 	}
 	
 	private boolean nightMode;
